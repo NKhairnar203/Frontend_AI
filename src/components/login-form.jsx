@@ -4,8 +4,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Link, useNavigate } from "react-router-dom";
-import { useContext, useState } from "react";
-import axios from "axios";
+import { useContext, useEffect, useState } from "react";
+import axios from "../config/axios";
 import { AuthContext } from "@/context/AuthContextProvider";
 
 export function LoginForm({ className, ...props }) {
@@ -13,8 +13,6 @@ export function LoginForm({ className, ...props }) {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // const [error, setError] = useState(null);
-  // const [loading, setLoading] = useState(false);
 
   const { setUser } = useContext(AuthContext);
 
@@ -31,12 +29,22 @@ export function LoginForm({ className, ...props }) {
         localStorage.setItem("token", res.data.token);
         setUser(res.data.user);
 
-        navigate("/");
+        navigate("/ask-to-ai");
       })
       .catch((err) => {
         console.log(err.response.data);
       });
   };
+
+  useEffect(() => {
+    
+    if(localStorage.getItem("token")){
+      return navigate("/ask-to-ai");
+    }
+    else{
+      return navigate("/");
+    }
+  }, []);
 
   return (
     <div
@@ -58,6 +66,8 @@ export function LoginForm({ className, ...props }) {
                 <Input
                   id="email"
                   type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   placeholder="m@example.com"
                   required
                 />
@@ -72,7 +82,13 @@ export function LoginForm({ className, ...props }) {
                     Forgot your password?
                   </a>
                 </div>
-                <Input id="password" type="password" required />
+                <Input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
               </div>
               <Button type="submit" className="w-full">
                 Login

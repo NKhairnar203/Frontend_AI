@@ -2,25 +2,22 @@ import { AuthContext } from "@/context/AuthContextProvider";
 import Dashboard from "@/pages/Dashboard";
 import Login from "@/pages/Login";
 import Signup from "@/pages/Signup";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 
-
 const PrivateRoute = () => {
-   const user = useContext(AuthContext);
-  //  const [user, setUser] = useState(true);
-  console.log("user", user.user.userID);
-   if (user.user.userID) {
-     return <Dashboard />;
-   } else {
-     return <Login />;
-   }
- };
+  const token = localStorage.getItem("token");
+
+
+    if (!token) {
+      return <Login />;
+    } else {
+      return <Dashboard />;
+    }
+  
+};
 
 export const AllRoutes = () => {
-
- 
-
   return (
     <div>
       <Routes>

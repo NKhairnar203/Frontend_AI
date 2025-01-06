@@ -10,11 +10,12 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { LucideSend } from "lucide-react";
+import { LogOutIcon, LucideSend } from "lucide-react";
 // import { TypographyMutedAI } from "@/components/TypographyMutedAI";
 import { useContext, useState } from "react";
 import { TypographyMutedUser } from "@/components/TypographyMutedUser";
 import { AuthContext } from "@/context/AuthContextProvider";
+import axios from "@/config/axios";
 
 const Dashboard = () => {
   const user = useContext(AuthContext);
@@ -71,15 +72,23 @@ const Dashboard = () => {
     ]);
     console.log("message", message.text);
   }
+
+
+
   return (
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset className="h-[98%]">
         <header className="flex h-12 shrink-0 items-center gap-2">
-          <div className="flex items-center gap-2 px-4">
-            <SidebarTrigger className="-ml-1" />
-            <Separator orientation="vertical" className="mx-1" />
-            <h1 className=" font-semibold">Chat Now</h1>
+          <div className="flex items-center justify-between w-full gap-2 px-4">
+            <div className="flex">
+              <SidebarTrigger className="-ml-1" />
+              <Separator orientation="vertical" className="mx-1" />
+              <h1 className=" font-semibold">Chat Now</h1>
+            </div>
+            <div>
+              <LogOutIcon />
+            </div>
           </div>
         </header>
         <div className="flex h-full flex-1 flex-col gap-2 p-3  pt-0">
