@@ -127,7 +127,7 @@ const data = {
     },
     {
       title: "Feedback",
-      url: "#",
+      url: "/feedback",
       icon: Send,
     },
   ],
@@ -164,7 +164,7 @@ export function AppSidebar({
                   <img src={Logo} alt="" />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">Nilesh Chat Bot</span>
+                  <span className="truncate font-semibold">Think_AI Bot</span>
                   <span className="truncate text-xs">Enterprise</span>
                 </div>
               </a>

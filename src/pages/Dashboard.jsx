@@ -16,64 +16,46 @@ import { useContext, useState } from "react";
 import { TypographyMutedUser } from "@/components/TypographyMutedUser";
 import { AuthContext } from "@/context/AuthContextProvider";
 import axios from "@/config/axios";
+import { ChatContext } from "@/context/ChatProvider";
+import { TypographyMutedAI } from "@/components/TypographyMutedAI";
 
 const Dashboard = () => {
   const user = useContext(AuthContext);
+  const { setAiMessage, aiMessage } = useContext(ChatContext);
+  const [input, setInput] = useState("");
   // console.log("user", user);
-  const [message, setMessage] = useState([
-    {
-      text: "Hello, I am AI. How can I help you?",
-      user: "NK",
-    },
-    {
-      text: "Hello, I am AI. How can I help you?",
-      user: "MK",
-    },
-    {
-      text: "Hello, I am AI. How can I help you?",
-      user: "RG",
-    },
-    {
-      text: "Hello, I am AI. How can I help you?",
-      user: "NK",
-    },
-    {
-      text: "Hello, Rushi",
-      user: "NK",
-    },
-    {
-      text: "Hello, Nilesh",
-      user: "RG",
-    },
-    {
-      text: "Hello, what are doing ?",
-      user: "NK",
-    },
-    {
-      text: "Hello, Rushi",
-      user: "NK",
-    },
-    {
-      text: "Hello, Nilesh",
-      user: "RG",
-    },
-    {
-      text: "Hello, what are doing ?",
-      user: "NK",
-    },
-  ]);
+  const [message, setMessage] = useState([]);
 
-  function handleSendMessage() {
-    setMessage([
-      ...message,
-      {
-        text: message.text,
-      },
-    ]);
-    console.log("message", message.text);
-  }
+  // const
 
+  const handleAIServer = () => {
+    axios
+      .post("/ai/get-result", {
+        input,
+      })
+      .then((res) => {
+        // console.log(res.data.user);
 
+        setMessage([
+          ...message,
+          { text: res.data.message, user: res.data.user },
+        ]);
+      })
+      .catch((err) => {
+        console.log(err.response.data);
+      });
+  };
+
+  const handleSend = () => {
+    if (input.trim()) {
+      setMessage([...message, { text: input, user: true }]);
+      // setAiMessage([...aiMessage, { text: message, user: true }]);
+      setInput("");
+      // console.log(input);
+
+      handleAIServer()
+    }
+  };
 
   return (
     <SidebarProvider>
@@ -84,7 +66,7 @@ const Dashboard = () => {
             <div className="flex">
               <SidebarTrigger className="-ml-1" />
               <Separator orientation="vertical" className="mx-1" />
-              <h1 className=" font-semibold">Chat Now</h1>
+              <h1 className=" font-semibold">Chat with Think_AI</h1>
             </div>
             <div>
               <LogOutIcon />
@@ -97,15 +79,19 @@ const Dashboard = () => {
               {message.map((msg, index) => {
                 return <TypographyMutedUser key={index} message={msg} />;
               })}
+              {/* {<TypographyMutedAI />} */}
             </ScrollArea>
             <div className="flex  w-full bottom-0 items-center gap-6">
               <Textarea
                 placeholder="Type your message here."
                 className="outline-none resize-none"
                 id="message"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
               />
               <Button
-                onClick={handleSendMessage}
+                disabled={input.trim() ? false : true}
+                onClick={handleSend}
                 className="rounded-full p-2.5"
               >
                 <LucideSend />{" "}

@@ -73,7 +73,7 @@ export function SignupForm({ className, ...props }) {
               </div>
               <div className="text-center text-sm">
                 I have an account?{" "}
-                <Link to="/" className="underline underline-offset-4">
+                <Link to="/auth/login" className="underline underline-offset-4">
                   Login Now
                 </Link>
               </div>

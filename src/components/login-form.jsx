@@ -42,7 +42,7 @@ export function LoginForm({ className, ...props }) {
       return navigate("/ask-to-ai");
     }
     else{
-      return navigate("/");
+      return navigate("/auth/login");
     }
   }, []);
 
