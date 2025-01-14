@@ -16,17 +16,14 @@ import { useContext, useState } from "react";
 import { TypographyMutedUser } from "@/components/TypographyMutedUser";
 import { AuthContext } from "@/context/AuthContextProvider";
 import axios from "@/config/axios";
-import { ChatContext } from "@/context/ChatProvider";
 import { TypographyMutedAI } from "@/components/TypographyMutedAI";
 
 const Dashboard = () => {
   const user = useContext(AuthContext);
-  const { setAiMessage, aiMessage } = useContext(ChatContext);
+  
   const [input, setInput] = useState("");
-  // console.log("user", user);
   const [message, setMessage] = useState([]);
 
-  // const
 
   const handleAIServer = () => {
     axios
@@ -34,12 +31,9 @@ const Dashboard = () => {
         input,
       })
       .then((res) => {
-        // console.log(res.data.user);
-
-        setMessage([
-          ...message,
-          { text: res.data.message, user: res.data.user },
-        ]);
+        
+        setMessage((prev) => [...prev, { text: res.data.message, user: "AI" }]);
+       
       })
       .catch((err) => {
         console.log(err.response.data);
@@ -48,12 +42,12 @@ const Dashboard = () => {
 
   const handleSend = () => {
     if (input.trim()) {
-      setMessage([...message, { text: input, user: true }]);
+      setMessage((prev) => [...prev, { text: input, user: true }]);
       // setAiMessage([...aiMessage, { text: message, user: true }]);
       setInput("");
       // console.log(input);
 
-      handleAIServer()
+      handleAIServer();
     }
   };
 
@@ -79,6 +73,9 @@ const Dashboard = () => {
               {message.map((msg, index) => {
                 return <TypographyMutedUser key={index} message={msg} />;
               })}
+              {/* {aiMessage.map((msg, index) => {
+                return <TypographyMutedUser key={index} message={msg} />;
+              })} */}
               {/* {<TypographyMutedAI />} */}
             </ScrollArea>
             <div className="flex  w-full bottom-0 items-center gap-6">

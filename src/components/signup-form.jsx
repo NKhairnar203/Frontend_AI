@@ -3,9 +3,44 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import axios from "../config/axios";
+import { AuthContext } from "@/context/AuthContextProvider";
 
 export function SignupForm({ className, ...props }) {
+  const navigate = useNavigate();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("Error Now");
+  const { setUser } = useContext(AuthContext);
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    axios
+      .post("/user/register", {
+        email,
+        password,
+      })
+      .then((res) => {
+        console.log(res.data);
+
+        localStorage.setItem("token", res.data.token);
+        setUser(res.data.user);
+
+        navigate("/ask-to-ai");
+      })
+      .catch((err) => {
+        console.log(err.response.data);
+      });
+  };
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      return navigate("/ask-to-ai");
+    }
+  }, []);
   return (
     <div
       className={cn("flex flex-col  justify-center gap-4", className)}
@@ -13,11 +48,10 @@ export function SignupForm({ className, ...props }) {
     >
       <Card className="overflow-hidden  w-fit  mx-auto">
         <CardContent className=" p-0  md:w-96">
-          <form className="p-6 md:p-8">
+          <form className="p-6 md:p-8" onSubmit={submitHandler}>
             <div className="flex flex-col gap-6">
               <div className="flex flex-col items-center text-center">
                 <h1 className="text-2xl font-bold">Register Now</h1>
-               
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
@@ -25,6 +59,8 @@ export function SignupForm({ className, ...props }) {
                   id="email"
                   type="email"
                   placeholder="mail@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   required
                 />
               </div>
@@ -32,7 +68,13 @@ export function SignupForm({ className, ...props }) {
                 <div className="flex items-center">
                   <Label htmlFor="password">Password</Label>
                 </div>
-                <Input id="password" type="password" required />
+                <Input
+                  id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  type="password"
+                  required
+                />
               </div>
               <Button type="submit" className="w-full">
                 Sign Up
@@ -72,7 +114,7 @@ export function SignupForm({ className, ...props }) {
                 </Button>
               </div>
               <div className="text-center text-sm">
-                I have an account?{" "}
+                I have an account? 
                 <Link to="/auth/login" className="underline underline-offset-4">
                   Login Now
                 </Link>
