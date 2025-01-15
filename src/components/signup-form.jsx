@@ -5,21 +5,23 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Link, useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
-import axios from "../config/axios";
 import { AuthContext } from "@/context/AuthContextProvider";
+import axiosInstance from "../config/axios";
 
 export function SignupForm({ className, ...props }) {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("Error Now");
   const { setUser } = useContext(AuthContext);
 
   const submitHandler = (e) => {
     e.preventDefault();
-    axios
+    axiosInstance
       .post("/user/register", {
+        name,
         email,
         password,
       })
@@ -52,6 +54,17 @@ export function SignupForm({ className, ...props }) {
             <div className="flex flex-col gap-6">
               <div className="flex flex-col items-center text-center">
                 <h1 className="text-2xl font-bold">Register Now</h1>
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="name">Name</Label>
+                <Input
+                  id="name"
+                  type="text"
+                  placeholder="ex. nilesh"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                />
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
@@ -114,7 +127,7 @@ export function SignupForm({ className, ...props }) {
                 </Button>
               </div>
               <div className="text-center text-sm">
-                I have an account? 
+                I have an account?
                 <Link to="/auth/login" className="underline underline-offset-4">
                   Login Now
                 </Link>

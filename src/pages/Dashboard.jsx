@@ -10,20 +10,18 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { LogOutIcon, LucideSend } from "lucide-react";
+import {  LucideSend } from "lucide-react";
 // import { TypographyMutedAI } from "@/components/TypographyMutedAI";
 import { useContext, useState } from "react";
 import { TypographyMutedUser } from "@/components/TypographyMutedUser";
 import { AuthContext } from "@/context/AuthContextProvider";
 import axios from "@/config/axios";
-import { TypographyMutedAI } from "@/components/TypographyMutedAI";
 
 const Dashboard = () => {
   const user = useContext(AuthContext);
-  
+
   const [input, setInput] = useState("");
   const [message, setMessage] = useState([]);
-
 
   const handleAIServer = () => {
     axios
@@ -31,9 +29,7 @@ const Dashboard = () => {
         input,
       })
       .then((res) => {
-        
         setMessage((prev) => [...prev, { text: res.data.message, user: "AI" }]);
-       
       })
       .catch((err) => {
         console.log(err.response.data);
@@ -43,7 +39,6 @@ const Dashboard = () => {
   const handleSend = () => {
     if (input.trim()) {
       setMessage((prev) => [...prev, { text: input, user: true }]);
-      // setAiMessage([...aiMessage, { text: message, user: true }]);
       setInput("");
       // console.log(input);
 
@@ -62,9 +57,7 @@ const Dashboard = () => {
               <Separator orientation="vertical" className="mx-1" />
               <h1 className=" font-semibold">Chat with Think_AI</h1>
             </div>
-            <div>
-              <LogOutIcon />
-            </div>
+           
           </div>
         </header>
         <div className="flex h-full flex-1 flex-col gap-2 p-3  pt-0">
@@ -73,10 +66,6 @@ const Dashboard = () => {
               {message.map((msg, index) => {
                 return <TypographyMutedUser key={index} message={msg} />;
               })}
-              {/* {aiMessage.map((msg, index) => {
-                return <TypographyMutedUser key={index} message={msg} />;
-              })} */}
-              {/* {<TypographyMutedAI />} */}
             </ScrollArea>
             <div className="flex  w-full bottom-0 items-center gap-6">
               <Textarea

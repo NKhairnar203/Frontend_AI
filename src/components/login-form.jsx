@@ -5,8 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Link, useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
-import axios from "../config/axios";
 import { AuthContext } from "@/context/AuthContextProvider";
+import axiosInstance from "../config/axios";
 
 export function LoginForm({ className, ...props }) {
   const navigate = useNavigate();
@@ -16,10 +16,10 @@ export function LoginForm({ className, ...props }) {
 
   const { setUser } = useContext(AuthContext);
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
-    axios
-      .post("/users/login", {
+    await axiosInstance
+      .post("/user/login", {
         email,
         password,
       })
@@ -34,14 +34,14 @@ export function LoginForm({ className, ...props }) {
       .catch((err) => {
         console.log(err.response.data);
       });
+
+    
   };
 
   useEffect(() => {
-    
-    if(localStorage.getItem("token")){
+    if (localStorage.getItem("token")) {
       return navigate("/ask-to-ai");
-    }
-    else{
+    } else {
       return navigate("/auth/login");
     }
   }, []);

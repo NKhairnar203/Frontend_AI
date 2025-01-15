@@ -1,7 +1,7 @@
-
 import { Card } from "./ui/card";
 import Logo from "../assets/artificial-intelligence-ai-processor-chip-icon-symbol-for-graphic-design-logo-web-site-social-media-png.webp";
 import UserLogo from "../assets/avatar-dummy-sign.webp";
+import Markdown from "markdown-to-jsx";
 export function TypographyMutedUser(message) {
   // console.log(aiMessage)
 
@@ -25,7 +25,7 @@ export function TypographyMutedUser(message) {
           className={`max-w-[450px] max-sm:max-w-[200px] p-3 top-2 right-4 mb-1`}
         >
           <p className="text-sm text-muted-foreground text-black">
-            {message.message.text}
+            <Markdown>{message.message.text}</Markdown>
           </p>
         </Card>
       </div>
