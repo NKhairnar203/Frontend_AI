@@ -47,8 +47,7 @@ export function AppSidebar({ ...props }) {
     };
     fetchProfile();
   }, []);
-
-  console.log(Date());
+;
   if (!user) {
     window.location.reload();
   }
