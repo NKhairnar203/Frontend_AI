@@ -53,9 +53,7 @@ export function AppSidebar({ ...props }) {
     fetchProfile();
   }, []);
 ;
-  if (!user) {
-    window.location.reload();
-  }
+
 
   return (
     <Sidebar variant="inset" {...props}>
