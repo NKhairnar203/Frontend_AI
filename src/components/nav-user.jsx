@@ -21,6 +21,8 @@ import {
 import userLogo from "../assets/avatar-dummy-sign.webp";
 import axiosInstance from "@/config/axios";
 
+import { toast } from "react-toastify";
+
 export function NavUser({ user }) {
   const { isMobile } = useSidebar();
 
@@ -30,10 +32,13 @@ export function NavUser({ user }) {
       .then((res) => {
         console.log(res.data);
         localStorage.removeItem("token");
+        toast.success("User Logout!")
+        
         window.location.reload();
       })
       .catch((err) => {
-        console.log(err);
+        console.log(err.response);
+        
       });
   };
 

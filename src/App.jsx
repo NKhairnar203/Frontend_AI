@@ -1,9 +1,6 @@
 // Desc: Main App component
 import { useEffect } from "react";
-import Home from "./pages/Home";
-import Login from "./pages/Login";
 import { AllRoutes } from "./Routes/AllRoutes";
-import New from "./pages/New";
 
 function App() {
   useEffect(() => {

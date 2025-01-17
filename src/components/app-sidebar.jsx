@@ -16,6 +16,8 @@ import {
 
 import Logo from "../assets/artificial-intelligence-ai-processor-chip-icon-symbol-for-graphic-design-logo-web-site-social-media-png.webp";
 import axios from "@/config/axios";
+import { toast } from "react-toastify";
+
 
 const data = {
   navSecondary: [
@@ -36,13 +38,16 @@ export function AppSidebar({ ...props }) {
   const [user, setUser] = React.useState({});
   React.useEffect(() => {
     const fetchProfile = async () => {
+     
       await axios
         .get("user/profile")
         .then((res) => {
+          console.log(res)
           setUser(res.data.user);
         })
         .catch((error) => {
-          console.log(error);
+          console.log(error.response.data.error);
+          toast.error(`${error.response.data.error},\n Please Refresh Once!`);
         });
     };
     fetchProfile();
