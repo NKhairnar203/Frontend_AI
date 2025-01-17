@@ -34,8 +34,9 @@ export function LoginForm({ className, ...props }) {
         navigate("/ask-to-ai");
       })
       .catch((err) => {
+        
         toast.error(err.response.data.errors[0].msg);
-        console.log(err.response.data.errors[0].msg);
+        console.log(err);
       });
 
     
